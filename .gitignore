@@ -1,0 +1,7 @@
+#Compiling target folders
+bin/
+obj/
+#Packages
+packages/
+#other
+.vs/
