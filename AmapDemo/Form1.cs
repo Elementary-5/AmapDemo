@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,14 @@ namespace AmapDemo
 {
     public partial class Form1 : Form
     {
+        private static string rootPath = Path.GetFullPath(@"..\..\RealTimeTrafficHtml");
+        
         public Form1()
         {
             InitializeComponent();
         }
 
-       
+        private bool realTimeTrafficisVisible = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -71,8 +74,8 @@ namespace AmapDemo
 
             shapeFileLayer.Open();
 
-
-            winformsMap1.CurrentExtent = new RectangleShape(104.076202, 30.636441, 104.097145, 30.622833);
+            //104.076233,30.623196&destination=104.097133,30.636324
+            winformsMap1.CurrentExtent = new RectangleShape(104.076233, 30.636324, 104.097133, 30.623196);
             winformsMap1.Refresh();
         }
 
@@ -81,5 +84,35 @@ namespace AmapDemo
             winformsMap1.FindFeatureLayer("InMemoryFeatureLayer").IsVisible = !winformsMap1.FindFeatureLayer("InMemoryFeatureLayer").IsVisible;
             winformsMap1.Refresh();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(realTimeTrafficisVisible = !realTimeTrafficisVisible)
+            {
+                RealTimeTraffic realTimeTraffic = new RealTimeTraffic();
+                realTimeTraffic.BringToFront();
+                realTimeTraffic.DocumentText = GetDocumentText();
+                realTimeTraffic.Size = this.Size;
+                realTimeTraffic.Dock = DockStyle.Fill;
+                this.Controls.Add(realTimeTraffic);
+                winformsMap1.Visible = false;
+                button2.BringToFront();
+            }
+            else
+            {
+                winformsMap1.Dock = DockStyle.Fill;
+                winformsMap1.Visible = true;
+            }
+            
+        }
+        private string GetDocumentText()
+        {
+            string realTimeTrafficPath = Path.Combine(rootPath, "RealTimeTraffic.html");
+            if(!File.Exists(realTimeTrafficPath))
+            {
+                return "文件不存在";
+            }
+            return File.ReadAllText(realTimeTrafficPath);
+    }
     }
 }
