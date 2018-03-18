@@ -30,7 +30,6 @@ namespace AmapDemo
         {
             this.serverUri = serverUri;
             this.key = key;
-            GetFeature();
         }
 
         protected override Collection<Feature> GetAllFeaturesCore(IEnumerable<string> returningColumnNames)
@@ -43,50 +42,7 @@ namespace AmapDemo
         {
             return GetFeaturesInsideBoundingBox(boundingBox, returningColumnNames);
         }
-        private void GetFeature()
-        {
-            features = new Collection<Feature>();
-
-            if (serverUri != null && !string.IsNullOrEmpty(key))
-            {
-                //http://restapi.amap.com/v3/direction/walking?key=您的key&origin=116.481028,39.989643&destination=116.434446,39.90816
-                var requestUrl = serverUri.AbsoluteUri + "?key=" + key + "&origin=104.076233,30.623196&destination=104.097133,30.636324";
-                var request = WebRequest.Create(new Uri(requestUrl));
-                var reponse = request.GetResponse();
-
-                using (var stream = reponse.GetResponseStream())
-                {
-                    var reader = new StreamReader(stream);
-                    var content = reader.ReadToEnd();
-                    var jsonArray = (JObject)JsonConvert.DeserializeObject(content);
-                    var route = jsonArray["route"];
-                    var paths = route["paths"];
-                    foreach (var path in paths)
-                    {
-                        var steps = path["steps"];
-                        foreach (var step in steps)
-                        {
-                            var polyline = step["polyline"];
-                            var lineShapes = polyline.ToObject<string>().Trim().Split(';');
-                            var lineShape = new LineShape();
-                            foreach (var line in lineShapes)
-                            {
-                                var longLat = line.Split(',');
-                                //纬经度
-                                var dic = delta(double.Parse(longLat[1]), double.Parse(longLat[0]));
-
-                                //var longValue = double.Parse(longLat[0]);
-                                //var latValue = double.Parse(longLat[1]);
-                                lineShape.Vertices.Add(new Vertex(dic["lon"], dic["lat"]));
-                            }
-                            var feature = new Feature(lineShape);
-                            features.Add(feature);
-                        }
-                    }
-                }
-            }
-
-        }
+        
         private new Collection<Feature> GetFeaturesInsideBoundingBox(RectangleShape boundingBox, IEnumerable<string> returningColumnNames)
         {
              features = new Collection<Feature>();
@@ -124,6 +80,7 @@ namespace AmapDemo
                                 lineShape.Vertices.Add(new Vertex(dic["lon"], dic["lat"]));
                             }
                             var feature = new Feature(lineShape);
+                            feature.ColumnValues.Add("jf", "8");
                             features.Add(feature);
                         }
                     }
