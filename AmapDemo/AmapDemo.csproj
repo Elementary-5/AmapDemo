@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214" />
+    <Reference Include="Awesomium.Windows.Forms, Version=1.6.6.0, Culture=neutral, PublicKeyToken=9bd24830fbe304a0, processorArchitecture=x86" />
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\MapSuiteDependency-GeoAPI.10.2.0\lib\net45\GeoAPI.dll</HintPath>
     </Reference>
@@ -51,6 +53,7 @@
       <HintPath>..\packages\MapSuiteDependency-NetTopologySuite.10.2.0\lib\net45\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -100,6 +103,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RealTimeTraffic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RealTimeTraffic.Designer.cs">
+      <DependentUpon>RealTimeTraffic.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,6 +121,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RealTimeTraffic.resx">
+      <DependentUpon>RealTimeTraffic.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="AppData\states.dbf" />
     <None Include="AppData\states.ids" />
     <None Include="AppData\states.idx" />
@@ -129,7 +141,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RealTimeTrafficHtml\RealTimeTraffic.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\ThinkGeo.MapSuite.10.2.8\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\packages\ThinkGeo.MapSuite.10.2.8\build\net45\ThinkGeo.MapSuite.targets')" />

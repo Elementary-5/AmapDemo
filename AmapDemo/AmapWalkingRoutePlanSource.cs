@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using ThinkGeo.MapSuite.Layers;
 using ThinkGeo.MapSuite.Shapes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AmapDemo
 {
@@ -42,12 +39,12 @@ namespace AmapDemo
         {
             return GetFeaturesInsideBoundingBox(boundingBox, returningColumnNames);
         }
-        
+
         private new Collection<Feature> GetFeaturesInsideBoundingBox(RectangleShape boundingBox, IEnumerable<string> returningColumnNames)
         {
-             features = new Collection<Feature>();
+            features = new Collection<Feature>();
 
-            if(serverUri != null && !string.IsNullOrEmpty(key))
+            if (serverUri != null && !string.IsNullOrEmpty(key))
             {
                 //http://restapi.amap.com/v3/direction/walking?key=您的key&origin=116.481028,39.989643&destination=116.434446,39.90816
                 var requestUrl = serverUri.AbsoluteUri + "?key=" + key + "&origin=104.076245,30.622981&destination=104.097273,30.636459";
@@ -89,6 +86,7 @@ namespace AmapDemo
 
             return features;
         }
+
         /**
      * @author 作者:
      * 方法描述:方法可以将高德地图SDK获取到的GPS经纬度转换为真实的经纬度，可以用于解决安卓系统使用高德SDK获取经纬度的转换问题。
@@ -96,6 +94,7 @@ namespace AmapDemo
      * @return 转换为真实GPS坐标后的经纬度
      * @throws <异常类型> {@inheritDoc} 异常描述
      */
+
         private Dictionary<String, Double> delta(double lat, double lon)
         {
             double a = 6378245.0;//克拉索夫斯基椭球参数长半轴a
@@ -115,6 +114,7 @@ namespace AmapDemo
 
             return dic;
         }
+
         //转换经度
         private double transformLon(double x, double y)
         {
@@ -124,6 +124,7 @@ namespace AmapDemo
             ret += (150.0 * Math.Sin(x / 12.0 * this.PI) + 300.0 * Math.Sin(x / 30.0 * this.PI)) * 2.0 / 3.0;
             return ret;
         }
+
         //转换纬度
         private double transformLat(double x, double y)
         {
